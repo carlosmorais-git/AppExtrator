@@ -1,0 +1,64 @@
+{
+  "name": "extrator-texto-manuscrito",
+  "version": "1.0.0",
+  "description": "Aplicação para extração de texto manuscrito usando GPT-4 Vision",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:react\" \"wait-on http://localhost:5173 && npm run dev:electron\"",
+    "dev:react": "vite",
+    "dev:electron": "electron .",
+    "start:backend": "cd backend && python api.py",
+    "build:react": "vite build",
+    "build:backend": "cd backend && pyinstaller --onefile api.py",
+    "build": "npm run build:react && npm run build:backend && electron-builder"
+  },
+  "keywords": [
+    "ocr",
+    "gpt4",
+    "vision",
+    "manuscrito"
+  ],
+  "author": "Carlos Morais",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.2.1",
+    "autoprefixer": "^10.4.17",
+    "concurrently": "^8.2.2",
+    "electron": "^28.1.3",
+    "electron-builder": "^24.13.3",
+    "electron-icon-builder": "^2.0.1",
+    "postcss": "^8.4.33",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.0.12",
+    "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "axios": "^1.6.5",
+    "lucide-react": "^0.312.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "build": {
+    "appId": "com.extratormanuscrito.app",
+    "productName": "Extrator Texto Manuscrito",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "public/icone.png"
+    },
+    "extraResources": [
+      {
+        "from": "backend/dist/api.exe",
+        "to": "backend/api.exe"
+      }
+    ]
+  }
+}
