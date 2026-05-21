@@ -31,17 +31,7 @@ Atenção: Ignora textos impresso. Sem caracteres especiais ou acentos."""
     modelo: Optional[str] = "gpt-4o-mini"
     qualidade: Optional[str] = "high"
 
-class ExtractionResult(BaseModel):
-    imagem: str
-    texto_extraido: str
-    tempo: float
-    sucesso: bool
 
-class ProgressUpdate(BaseModel):
-    atual: int
-    total: int
-    imagem: str
-    status: str
 
 class DownloadRequest(BaseModel):
     resultados: List[dict]
@@ -51,6 +41,7 @@ class ExtratorAPI:
     """Classe principal que gerencia a API de extração de texto"""
     
     def __init__(self):
+        """Construtor"""
         self.app = FastAPI(title="Extrator de Texto Manuscrito API")
         self.executor = ThreadPoolExecutor(max_workers=4)
         
@@ -75,8 +66,8 @@ Atenção: Ignora textos impresso. Sem caracteres especiais ou acentos.""",
             "quantidade": 12
         }
         
-        self._setup_middleware()
-        self._setup_routes()
+        self._setup_middleware() # Configura CORS
+        self._setup_routes() # Registra rotas da API
     
     def _setup_middleware(self):
         """Configura CORS"""
@@ -106,12 +97,12 @@ Atenção: Ignora textos impresso. Sem caracteres especiais ou acentos.""",
     
     def extrair_texto_gpt4(
         self, 
-        imagem_path: str, 
-        api_key: str, 
-        system_prompt: Optional[str] = None, 
-        user_prompt: Optional[str] = None, 
-        modelo: Optional[str] = "gpt-4o-mini", 
-        qualidade: Optional[str] = "high"
+        imagem_path: str,
+        api_key: str,
+        system_prompt: Optional[str] = None,
+        user_prompt: Optional[str] = None,
+        modelo: Optional[str] = "gpt-4o-mini",
+        qualidade: Optional[str] = "high",
     ) -> str:
         """Extrai texto manuscrito usando GPT-4 Vision"""
         
@@ -247,6 +238,7 @@ Atenção: Ignora textos impresso. Sem caracteres especiais ou acentos.""",
         if self.extraction_progress["running"]:
             raise HTTPException(status_code=400, detail="Extração já em andamento")
         
+        # Listar os valores passado do fronte
         pasta = request.pasta
         api_key = request.api_key
         quantidade = request.quantidade
@@ -335,7 +327,10 @@ Atenção: Ignora textos impresso. Sem caracteres especiais ou acentos.""",
             raise HTTPException(status_code=400, detail="Nenhuma extração em andamento")
         
         self.extraction_progress["running"] = False
-        return {"cancelado": True, "message": "Extração cancelada"}
+        return {
+            "cancelado": True, 
+            "message": "Extração cancelada"
+                }
     
     # ============ ENDPOINTS DE DOWNLOAD ============
     
