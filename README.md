@@ -1,6 +1,7 @@
 # Extrator de Texto Manuscrito
 
 Aplicação desktop para extração automática de textos manuscritos de imagens usando GPT-4 Vision.
+Última versão -> https://github.com/carlosmorais-git/ExtratorTextoManuscrito
 
 ## Funcionalidades
 
